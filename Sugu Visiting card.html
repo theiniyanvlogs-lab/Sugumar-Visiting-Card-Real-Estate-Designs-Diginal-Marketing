@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>R. Sugumar | AI Digital Visiting Card</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --bg1: #030b14;
+      --bg2: #081a2d;
+      --card: rgba(8, 20, 36, 0.88);
+      --card-2: rgba(10, 24, 42, 0.88);
+      --cyan: #39f6ff;
+      --cyan-soft: rgba(57, 246, 255, 0.16);
+      --cyan-line: rgba(57, 246, 255, 0.24);
+      --orange: #ff9c3d;
+      --orange-soft: rgba(255, 156, 61, 0.14);
+      --orange-line: rgba(255, 156, 61, 0.22);
+      --white: #ffffff;
+      --text: #d9eeff;
+      --muted: #8eb4d1;
+      --line: rgba(255,255,255,0.08);
+      --shadow: 0 22px 60px rgba(0, 0, 0, 0.55);
+      --radius: 28px;
+      --radius-sm: 18px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      color: var(--white);
+      padding: 14px;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(57,246,255,0.08), transparent 25%),
+        radial-gradient(circle at 80% 10%, rgba(255,156,61,0.07), transparent 22%),
+        radial-gradient(circle at 10% 80%, rgba(57,246,255,0.05), transparent 25%),
+        radial-gradient(circle at 90% 85%, rgba(255,156,61,0.05), transparent 22%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      background-image:
+        linear-gradient(rgba(57,246,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(57,246,255,0.03) 1px, transparent 1px);
+      background-size: 38px 38px;
+      pointer-events: none;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        linear-gradient(transparent 0%, rgba(0,0,0,0.08) 100%);
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 430px;
+      margin: 0 auto 100px;
+    }
+
+    .glass-card {
+      position: relative;
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+      overflow: hidden;
+    }
+
+    .glass-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      padding: 1px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(57,246,255,0.42), rgba(255,156,61,0.32), rgba(57,246,255,0.18));
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      animation: glowBorder 4s linear infinite;
+    }
+
+    @keyframes glowBorder {
+      0%   { filter: drop-shadow(0 0 6px rgba(57,246,255,0.08)); }
+      50%  { filter: drop-shadow(0 0 10px rgba(255,156,61,0.10)); }
+      100% { filter: drop-shadow(0 0 6px rgba(57,246,255,0.08)); }
+    }
+
+    .hero {
+      position: relative;
+      padding: 26px 18px 22px;
+      text-align: center;
+      background:
+        radial-gradient(circle at top center, rgba(57,246,255,0.12), transparent 35%),
+        linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .corner-light {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      filter: blur(35px);
+      opacity: 0.15;
+      pointer-events: none;
+    }
+
+    .corner-light.top-left {
+      top: -35px;
+      left: -25px;
+      background: var(--cyan);
+    }
+
+    .corner-light.top-right {
+      top: -35px;
+      right: -25px;
+      background: var(--orange);
+    }
+
+    .ai-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+      color: var(--cyan);
+      background: rgba(57,246,255,0.06);
+      border: 1px solid rgba(57,246,255,0.16);
+      box-shadow: 0 8px 24px rgba(57,246,255,0.06);
+    }
+
+    .ai-logo {
+      width: 92px;
+      height: 92px;
+      margin: 0 auto 16px;
+      border-radius: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+      color: var(--cyan);
+      background:
+        linear-gradient(145deg, rgba(57,246,255,0.07), rgba(255,156,61,0.06));
+      border: 1px solid rgba(57,246,255,0.16);
+      box-shadow:
+        inset 0 0 25px rgba(57,246,255,0.04),
+        0 0 18px rgba(57,246,255,0.05);
+      animation: floatIcon 3.5s ease-in-out infinite;
+    }
+
+    @keyframes floatIcon {
+      0%, 100% { transform: translateY(0px); }
+      50%      { transform: translateY(-5px); }
+    }
+
+    .phone-top {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--white);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 21px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      text-shadow: 0 0 12px rgba(57,246,255,0.08);
+    }
+
+    .name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 31px;
+      line-height: 1.15;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 8px;
+      text-shadow: 0 0 14px rgba(57,246,255,0.08);
+    }
+
+    .sub-role {
+      font-size: 13px;
+      color: var(--cyan);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+    }
+
+    .location-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: var(--orange);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .tagline {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text);
+      max-width: 340px;
+      margin: 0 auto;
+    }
+
+    .content {
+      padding: 18px;
+    }
+
+    .section {
+      margin-bottom: 18px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--cyan);
+      margin-bottom: 10px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .mini-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 22px;
+      padding: 14px;
+      backdrop-filter: blur(8px);
+    }
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .action-btn {
+      text-decoration: none;
+      color: var(--white);
+      border-radius: 18px;
+      padding: 14px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      transition: all 0.25s ease;
+      background: linear-gradient(135deg, rgba(57,246,255,0.08), rgba(255,156,61,0.08));
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .action-btn:hover,
+    .action-btn:active {
+      transform: translateY(-2px);
+      border-color: rgba(57,246,255,0.22);
+      box-shadow: 0 10px 20px rgba(57,246,255,0.05);
+    }
+
+    .about-text {
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .about-text strong {
+      color: var(--white);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .service-item {
+      background: linear-gradient(145deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 18px;
+      padding: 14px 10px;
+      text-align: center;
+      transition: 0.25s ease;
+    }
+
+    .service-item:hover {
+      transform: translateY(-2px);
+      border-color: rgba(57,246,255,0.18);
+    }
+
+    .service-item i {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 8px;
+      color: var(--orange);
+    }
+
+    .service-item span {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .stat-box {
+      text-align: center;
+      border-radius: 18px;
+      padding: 14px 8px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: 0.25s ease;
+    }
+
+    .stat-box:hover {
+      transform: translateY(-2px);
+    }
+
+    .stat-box .icon {
+      font-size: 18px;
+      margin-bottom: 7px;
+      color: var(--cyan);
+    }
+
+    .stat-box .label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    .stat-box .value {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--white);
+    }
+
+    .price-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .price-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .price-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .price-left i {
+      color: var(--orange);
+      font-size: 16px;
+    }
+
+    .price-right {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--cyan);
+    }
+
+    .sample-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .sample-box {
+      border-radius: 18px;
+      padding: 14px 10px;
+      text-align: center;
+      background: linear-gradient(145deg, rgba(57,246,255,0.05), rgba(255,156,61,0.05));
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .sample-box i {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 8px;
+      color: var(--cyan);
+    }
+
+    .sample-box h4 {
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--white);
+    }
+
+    .sample-box p {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .cta-btn {
+      width: 100%;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      transition: all 0.25s ease;
+      border: none;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .cta-primary {
+      background: linear-gradient(135deg, rgba(57,246,255,0.18), rgba(57,246,255,0.08));
+      color: var(--white);
+      border: 1px solid rgba(57,246,255,0.22);
+      box-shadow: 0 12px 24px rgba(57,246,255,0.06);
+    }
+
+    .cta-secondary {
+      background: linear-gradient(135deg, rgba(255,156,61,0.14), rgba(255,156,61,0.06));
+      color: var(--white);
+      border: 1px solid rgba(255,156,61,0.18);
+    }
+
+    .cta-dark {
+      background: rgba(255,255,255,0.03);
+      color: var(--white);
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .cta-btn:hover,
+    .cta-btn:active {
+      transform: translateY(-2px);
+    }
+
+    .info-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .info-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .info-icon {
+      min-width: 38px;
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(57,246,255,0.06);
+      color: var(--cyan);
+      border: 1px solid rgba(57,246,255,0.10);
+    }
+
+    .info-text {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text);
+    }
+
+    .info-text strong {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      padding-top: 4px;
+    }
+
+    .floating-whatsapp {
+      position: fixed;
+      right: 16px;
+      bottom: 84px;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #25D366;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 28px;
+      box-shadow: 0 14px 28px rgba(37, 211, 102, 0.28);
+      z-index: 999;
+      animation: pulseWhatsApp 2s infinite;
+    }
+
+    @keyframes pulseWhatsApp {
+      0%   { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.35); }
+      70%  { box-shadow: 0 0 0 14px rgba(37, 211, 102, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+    }
+
+    .sticky-bottom {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+      background: rgba(3, 11, 20, 0.92);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      z-index: 998;
+    }
+
+    .sticky-inner {
+      max-width: 430px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .sticky-btn {
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 10px;
+      border-radius: 16px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--white);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .sticky-call {
+      background: linear-gradient(135deg, rgba(57,246,255,0.18), rgba(57,246,255,0.08));
+      border-color: rgba(57,246,255,0.18);
+    }
+
+    .sticky-order {
+      background: linear-gradient(135deg, rgba(255,156,61,0.18), rgba(255,156,61,0.08));
+      border-color: rgba(255,156,61,0.18);
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+
+      .container {
+        max-width: 100%;
+      }
+
+      .name {
+        font-size: 27px;
+      }
+
+      .phone-top {
+        font-size: 19px;
+      }
+
+      .quick-actions,
+      .services-grid,
+      .sample-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <div class="glass-card">
+
+      <!-- HERO -->
+      <section class="hero">
+        <div class="corner-light top-left"></div>
+        <div class="corner-light top-right"></div>
+
+        <div class="ai-badge">
+          <i class="fa-solid fa-bolt"></i> AI Powered Promotion
+        </div>
+
+        <div class="ai-logo">
+          <i class="fa-solid fa-microchip"></i>
+        </div>
+
+        <a href="tel:+917200893968" class="phone-top">
+          <i class="fa-solid fa-phone"></i> 7200893968
+        </a>
+
+        <div class="name">R. SUGUMAR</div>
+        <div class="sub-role">AI Designer • Digital Creator • Business Analyst</div>
+
+        <div class="location-pill">
+          <i class="fa-solid fa-location-dot"></i> Chennai, Tamil Nadu
+        </div>
+
+        <div class="tagline">
+          AI-Powered Real Estate Promotion Specialist.<br>
+          Premium Property Posters, Video Ads, WhatsApp Promotions & Digital Visiting Cards that help agents attract more buyers.
+        </div>
+      </section>
+
+      <div class="content">
+
+        <!-- QUICK ACTIONS -->
+        <section class="section">
+          <div class="section-title">
+            <i class="fa-solid fa-bolt"></i> Quick Actions
+          </div>
+          <div class="quick-actions">
+            <a class="action-btn" href="tel:+917200893968">
+              <i class="fa-solid fa-phone"></i> Call Now
+            </a>
+            <a class="action-btn" href="https://wa.me/917200893968?text=Hello%20I%20need%20real%20estate%20promotion%20design" target="_blank">
+              <i class="fa-brands fa-whatsapp"></i> WhatsApp
+            </a>
+            <a class="action-btn" href="mailto:yourmail@gmail.com">
+              <i class="fa-solid fa-envelope"></i> Email
+            </a>
+            <a class="action-btn" href="https://maps.google.com/?q=Chennai" target="_blank">
+              <i class="fa-solid fa-location-dot"></i> Chennai
+            </a>
+          </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section class="section">
+          <div class="section-title">
+            <i class="fa-solid fa-user"></i> About Me
+          </div>
+          <div class="mini-card">
+            <div class="about-text">
+              <strong>I create premium promotional designs</strong> for real estate agents, restaurants, beauty parlours and local businesses.
+              <br><br>
+              My focus is simple: <strong>turn normal property details into eye-catching sales creatives</strong> that look professional on WhatsApp, social media, status and customer sharing.
+            </div>
+          </div>
+        </section>
+
+        <!-- SERVICES -->
+        <section class="section">
+          <div class="section-title">
+            <i class="fa-solid fa-layer-group"></i> My Services
+          </div>
+          <div class="mini-card">
+            <div class="services-grid">
+              <div class="service-item">
+                <i class="fa-solid fa-building"></i>
+                <span>Real Estate Posters</span>
+              </div>
+              <div class="service-item">
+                <i class="fa-solid fa-video"></i>
+                <span>Property Video Ads</span>
+              </div>
+              <div class="service-item">
+                <i class="fa-solid fa-share-nodes"></i>
+                <span>WhatsApp Promotions</span>
+              </div>
+              <div class="service-item">
+                <i class="fa-solid fa-address-card"></i>
+                <span>Digital Visiting Cards</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TRUST -->
+        <section class="section">
+          <div class="section-title">
+            <i class="fa-solid fa-shield-halved"></i> Trust & Proof
+          </div>
+          <div class="stats">
+            <div class="stat-box">
+              <div class="icon"><i class="fa-solid fa-globe"></i></div>
+              <div class="label">Projects</div>
+              <div class="value">7</div>
+            </div>
+            <div class="stat-box">
+              <div class="icon"><i class="fa-solid fa-handshake"></i></div>
+              <div class="label">Clients</div>
+              <div class="value">28</div>
+            </div>
+            <div class="stat-box">
+              <div class="icon"><i class="fa-solid fa-user-group"></i></div>
+              <div class="label">Followers</div>
+              <div class="value">1920</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PRICING -->
+        <section class="section">
+          <div class="section-title">
+            <i class="fa-solid fa-indian-rupee-sign"></i> Service Charges
+          </div>
+          <div class="mini-card">
+            <div class="price-list">
+              <div class="price-item">
+                <div class="price-left">
+                  <i class="fa-solid fa-image"></i>
+                  Premium Poster Design
+                </div>
+                <div class="price-right">₹300</div>
+              </div>
+
+              <div class="price-item">
+                <div class="price-left">
+                  <i class="fa-solid fa-film"></i>
+                  Video Advertisement
+                </div>
+                <div class="price-right">₹500</div>
+              </div>
+
+              <div class="price-item">
+                <div class="price-left">
+                  <i class="fa-solid fa-layer-group"></i>
+                  5 Posters Package
+                </div>
+                <div class="price-right">₹1250</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SAMPLE WORK TYPES -->
+        <section class="section">
+          <div class="section-title">
+            <i class="fa-solid fa-images"></i> Sample Work Types
+          </div>
+          <div class="sample-grid">
+            <div class="sample-box">
+              <i class="fa-solid fa-house"></i>
+              <h4>Flat / Villa Ads</h4>
+              <p>Premium listing creatives for sale & rent</p>
+            </div>
+            <div class="sample-box">
+              <i class="fa-solid fa-map-location-dot"></i>
+              <h4>Plot / Land Posters</h4>
+              <p>WhatsApp-ready property promotion designs</p>
+            </div>
+            <div class="sample-box">
+              <i class="fa-solid fa-building-circle-check"></i>
+              <h4>Commercial Ads</h4>
+              <p>Office, shop and business property creatives</p>
+            </div>
+            <div class="sample-box">
+              <i class="fa-solid fa-mobile-screen-button"></i>
+              <h4>Status Promotions</h4>
+              <p>Fast shareable vertical mobile designs</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- CONTACT DETAILS -->
+        <section class="section">
+          <div class="section-title">
+            <i class="fa-solid fa-address-book"></i> Contact Details
+          </div>
+          <div class="mini-card">
+            <div class="info-list">
+              <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-user"></i></div>
+                <div class="info-text">
+                  <strong>Name</strong>
+                  R. Sugumar
+                </div>
+              </div>
+
+              <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-phone"></i></div>
+                <div class="info-text">
+                  <strong>Phone / WhatsApp</strong>
+                  +91 7200893968
+                </div>
+              </div>
+
+              <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
+                <div class="info-text">
+                  <strong>Location</strong>
+                  Chennai, Tamil Nadu
+                </div>
+              </div>
+
+              <div class="info-item">
+                <div class="info-icon"><i class="fa-solid fa-briefcase"></i></div>
+                <div class="info-text">
+                  <strong>Speciality</strong>
+                  Real Estate Promotion Posters, Video Ads, WhatsApp Promotions & Digital Cards
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="section">
+          <div class="section-title">
+            <i class="fa-solid fa-paper-plane"></i> Client Actions
+          </div>
+
+          <a class="cta-btn cta-primary" href="https://wa.me/917200893968?text=Hello%20I%20need%20a%20premium%20real%20estate%20poster" target="_blank">
+            <i class="fa-brands fa-whatsapp"></i>
+            Order Poster on WhatsApp
+          </a>
+
+          <a class="cta-btn cta-secondary" href="https://drive.google.com/" target="_blank">
+            <i class="fa-solid fa-folder-open"></i>
+            View Sample Works
+          </a>
+
+          <button class="cta-btn cta-dark" onclick="shareCard()">
+            <i class="fa-solid fa-share-nodes"></i>
+            Share My Digital Card
+          </button>
+
+          <button class="cta-btn cta-dark" onclick="downloadVCF()">
+            <i class="fa-solid fa-address-card"></i>
+            Save My Contact
+          </button>
+        </section>
+
+        <div class="footer">
+          Premium AI Digital Visiting Card • Real Estate Promotion Specialist
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating WhatsApp -->
+  <a class="floating-whatsapp" href="https://wa.me/917200893968?text=Hello%20I%20need%20real%20estate%20promotion%20design" target="_blank" aria-label="WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+
+  <!-- Sticky Bottom CTA -->
+  <div class="sticky-bottom">
+    <div class="sticky-inner">
+      <a class="sticky-btn sticky-call" href="tel:+917200893968">
+        <i class="fa-solid fa-phone"></i> Call Now
+      </a>
+      <a class="sticky-btn sticky-order" href="https://wa.me/917200893968?text=Hello%20I%20need%20real%20estate%20promotion%20design" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i> Order Now
+      </a>
+    </div>
+  </div>
+
+  <script>
+    function shareCard() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'R. Sugumar - AI Digital Visiting Card',
+          text: 'Check my premium AI-powered digital visiting card for real estate promotions',
+          url: window.location.href
+        });
+      } else {
+        alert('Share option not supported on this device. Please copy the link manually.');
+      }
+    }
+
+    function downloadVCF() {
+      const vcfContent = `BEGIN:VCARD
+VERSION:3.0
+FN:R. Sugumar
+ORG:AI Designer / Digital Creator / Business Analyst
+TITLE:Real Estate Promotion Specialist
+TEL;TYPE=CELL:+917200893968
+EMAIL:yourmail@gmail.com
+ADR:;;Chennai, Tamil Nadu, India;;;;
+NOTE:Premium Poster Design ₹300 | Video Advertisement ₹500 | 5 Posters Package ₹1250
+END:VCARD`;
+
+      const blob = new Blob([vcfContent], { type: 'text/vcard' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'R_Sugumar_Digital_Contact.vcf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
+
+</body>
+</html>
